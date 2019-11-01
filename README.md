@@ -1,2 +1,2 @@
-# ID2222
-Assignments for KTH Course ID2222
+# Data Mining
+Assignments for KTH Course Data Mining ID2222
