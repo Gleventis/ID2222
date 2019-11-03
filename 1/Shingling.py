@@ -95,31 +95,3 @@ for key, value in shingles.items():
 
 jaccard_similarity = CompareSets(shingles[1], shingles[2], universal_set)
 print(jaccard_similarity)
-
-# for i, j in shingles.items():
-#     print("Document " + str(i))
-#     print(j)
-
-#EXPERIMENTATION WITH CHARACTERISTIC MATRIX
-# row1 = []
-# for i in universal_set:
-#     if i in shingles[1]:
-#         row1.append(1)
-#     else:
-#         row1.append(0)
-#
-# row2 = []
-# for i in universal_set:
-#     if i in shingles[2]:
-#         row2.append(1)
-#     else:
-#         row2.append(0)
-#
-# row3 = []
-# for i in universal_set:
-#     if i in shingles[3]:
-#         row3.append(1)
-#     else:
-#         row3.append(0)
-#
-# charMatrix = np.column_stack((row1, row2, row3))
