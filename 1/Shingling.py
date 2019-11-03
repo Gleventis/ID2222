@@ -1,7 +1,9 @@
 import os
+import string
 import binascii
+import numpy as np
 
-#reading the content of the three documents
+#Reading the content of the three documents
 def readingDocs():
     files = {}
     for filename in os.listdir():
@@ -11,20 +13,21 @@ def readingDocs():
     return files
 
 
-#splitting the docs in list of words and assigning an integer as the key for the document
+#Splitting the docs in list of words and assigning an integer as the key for the document
 def splitting(files):
     docs = {}
     i = 0
     for key,value in files.items():
         lowerVal = value.lower().replace('\n', '')
-        split = lowerVal.split(" ")
+        readyString = lowerVal.translate(str.maketrans('', '', string.punctuation)) # To remove the punctuation from the string
+        split = readyString.split(" ")
         i = i + 1
         docs[i] = split
     return docs
 
 
 
-#Creating shingles from the documents of length k
+#Creating shingles from the documents of length k, hashing them to integers and return a dictionary of hashed shingles
 def shingling(k, documents):
 
     docsAsShingles = {}
@@ -59,9 +62,18 @@ def shingling(k, documents):
 
     return docsAsHashedShingles
 
-files = readingDocs()
+#Three arguments, two sets of shingles and the universal set, Computes the jaccard_similarity of the two sets
+def CompareSets(shingle1, shingle2, universal_set):
+    count = 0
 
-docs = splitting(files)
+    for i in shingle1:
+        if i in shingle2:
+            count += 1
+
+    jaccard_similarity = count / len(universal_set)
+    return jaccard_similarity
+
+docs = splitting(readingDocs())
 
 #k is the length of the shingles
 k = 0
@@ -75,9 +87,39 @@ while True:
 
 shingles = shingling(k, docs)
 
-for i, j in shingles.items():
-    print(j)
-    print(i)
+#Construct universal set that has all the shingles
+universal_set = set()
+for key, value in shingles.items():
+    universal_set.update(value)
 
 
-# TODO: Create an ordered list of hashes
+jaccard_similarity = CompareSets(shingles[1], shingles[2], universal_set)
+print(jaccard_similarity)
+
+# for i, j in shingles.items():
+#     print("Document " + str(i))
+#     print(j)
+
+#EXPERIMENTATION WITH CHARACTERISTIC MATRIX
+# row1 = []
+# for i in universal_set:
+#     if i in shingles[1]:
+#         row1.append(1)
+#     else:
+#         row1.append(0)
+#
+# row2 = []
+# for i in universal_set:
+#     if i in shingles[2]:
+#         row2.append(1)
+#     else:
+#         row2.append(0)
+#
+# row3 = []
+# for i in universal_set:
+#     if i in shingles[3]:
+#         row3.append(1)
+#     else:
+#         row3.append(0)
+#
+# charMatrix = np.column_stack((row1, row2, row3))
